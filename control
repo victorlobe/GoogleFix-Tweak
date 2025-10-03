@@ -1,6 +1,6 @@
 Package: com.victorlobe.googlefix
 Name: GoogleFix
-Version: 1.0.0
+Version: 1.0.1
 Architecture: iphoneos-arm
 Description: Fixes Google on iOS 6
 Maintainer: Victor
