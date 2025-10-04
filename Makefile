@@ -3,7 +3,7 @@ TARGET := iphone:7.1
 
 INSTALL_TARGET_PROCESSES = SpringBoard
 
-
+GoogleFix_FRAMEWORKS = UIKit Foundation
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = GoogleFix

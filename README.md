@@ -21,6 +21,10 @@
 - Compatible with iOS 6 and newer
 - Minimal code - only hooks Google domains
 
+## ⚠️ Known Issue
+
+**Note**: On some devices (especially iOS 6.0.x), all websites may currently show the iOS 7 User-Agent instead of just Google domains. This will be fixed in an upcoming update in the next few hours.
+
 ## Requirements
 
 - iOS 6.0 or newer

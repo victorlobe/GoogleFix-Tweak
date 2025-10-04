@@ -1,69 +1,102 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
+static NSString * const kModernUA =
+@"Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53";
+
+static inline BOOL HostIsGoogle(NSString *host) {
+    if (!host) return NO;
+    return [host rangeOfString:@"google."].location != NSNotFound;
+}
+
 %ctor {
     @autoreleasepool {
-        NSString *modernUserAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53";
-        [[NSUserDefaults standardUserDefaults] setObject:modernUserAgent forKey:@"UserAgent"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        @try {
+            //cleanup for old versions
+            NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+            [d removeObjectForKey:@"UserAgent"];
+            [d synchronize];
+        } @catch (__unused NSException *e) {}
+
+        NSString *bundle = [[NSBundle mainBundle] bundleIdentifier];
+        if ([bundle isEqualToString:@"com.apple.mobilesafari"]) {
+            [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"UserAgent": kModernUA }];
+        }
     }
 }
 
 %hook NSURLRequest
 
 - (id)initWithURL:(NSURL *)URL {
-    NSURLRequest *request = %orig;
-    
+    NSURLRequest *req = %orig(URL);
+    if (!req || !URL) return req;
+
     NSString *host = [URL host];
-    if (host && [host rangeOfString:@"google."].location != NSNotFound) {
-        NSMutableURLRequest *mutableRequest = [request mutableCopy];
-        NSString *modernUserAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53";
-        [mutableRequest setValue:modernUserAgent forHTTPHeaderField:@"User-Agent"];
-        return mutableRequest;
+    if (HostIsGoogle(host)) {
+        NSMutableURLRequest *m = [req mutableCopy];
+        [m setValue:kModernUA forHTTPHeaderField:@"User-Agent"];
+        NSURLRequest *finalReq = [m copy];
+#if !__has_feature(objc_arc)
+        [m release];
+#endif
+#if __has_feature(objc_arc)
+        return finalReq;
+#else
+        return [finalReq autorelease];
+#endif
     }
-    
-    return request;
+    return req;
 }
 
-- (id)initWithURL:(NSURL *)URL cachePolicy:(NSURLRequestCachePolicy)cachePolicy timeoutInterval:(NSTimeInterval)timeoutInterval {
-    NSURLRequest *request = %orig;
-    
+- (id)initWithURL:(NSURL *)URL cachePolicy:(NSURLRequestCachePolicy)policy timeoutInterval:(NSTimeInterval)timeout {
+    NSURLRequest *req = %orig(URL, policy, timeout);
+    if (!req || !URL) return req;
+
     NSString *host = [URL host];
-    if (host && [host rangeOfString:@"google."].location != NSNotFound) {
-        NSMutableURLRequest *mutableRequest = [request mutableCopy];
-        NSString *modernUserAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53";
-        [mutableRequest setValue:modernUserAgent forHTTPHeaderField:@"User-Agent"];
-        return mutableRequest;
+    if (HostIsGoogle(host)) {
+        NSMutableURLRequest *m = [req mutableCopy];
+        [m setValue:kModernUA forHTTPHeaderField:@"User-Agent"];
+        NSURLRequest *finalReq = [m copy];
+#if !__has_feature(objc_arc)
+        [m release];
+#endif
+#if __has_feature(objc_arc)
+        return finalReq;
+#else
+        return [finalReq autorelease];
+#endif
     }
-    
-    return request;
-}
-
-%end
-
-%hook NSUserDefaults
-
-- (id)init {
-    id result = %orig;
-    NSString *modernUserAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53";
-    NSDictionary *userAgentDict = @{@"UserAgent": modernUserAgent};
-    [result registerDefaults:userAgentDict];
-    return result;
+    return req;
 }
 
 %end
 
 %hook UIWebView
 
+- (void)loadRequest:(NSURLRequest *)request {
+    NSURL *u = request.URL;
+    if (HostIsGoogle(u.host)) {
+        NSMutableURLRequest *m = [request mutableCopy];
+        [m setValue:kModernUA forHTTPHeaderField:@"User-Agent"];
+        %orig(m);
+#if !__has_feature(objc_arc)
+        [m release];
+#endif
+        return;
+    }
+    %orig;
+}
+
 - (NSString *)stringByEvaluatingJavaScriptFromString:(NSString *)script {
-    if ([script rangeOfString:@"navigator.userAgent"].location != NSNotFound) {
-        return @"Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53";
+    NSURL *u = self.request.URL;
+    if (HostIsGoogle(u.host)) {
+        if ([script rangeOfString:@"navigator.userAgent"].location != NSNotFound) {
+            return kModernUA;
+        }
+        if ([script rangeOfString:@"navigator.platform"].location != NSNotFound) {
+            return @"iPhone";
+        }
     }
-    
-    if ([script rangeOfString:@"navigator.platform"].location != NSNotFound) {
-        return @"iPhone";
-    }
-    
     return %orig;
 }
 
