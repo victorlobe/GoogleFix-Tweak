@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="343" height="76" alt="GoogleFix" src="http://storage.server.victorlobe.me/Cydia/packageIcons/GoogleFixIcon.png" />
+  <img width="343" height="76" alt="GoogleFixIcon" src="https://github.com/user-attachments/assets/da8f95b7-8536-4676-8c5b-e4909b3cb676" />
 </p>
 <p align="center">
   An iOS tweak that fixes Google on iOS 6+ by bypassing browser detection.
