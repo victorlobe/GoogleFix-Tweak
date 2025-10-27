@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="120" height="120" alt="PinterestFix" src=„assets/GoogleFixIcon.png" />
+  <img width="343" height="76" alt="GoogleFix" src="http://storage.server.victorlobe.me/Cydia/packageIcons/GoogleFixIcon.png" />
 </p>
 <p align="center">
   An iOS tweak that fixes Google on iOS 6+ by bypassing browser detection.
