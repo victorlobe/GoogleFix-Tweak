@@ -41,6 +41,19 @@
 
 4. **Open Google** - it should now work without browser warnings!
 
+
+## Changelog
+
+### v1.0.2
+- Fixes UserDefault key leftovers when removing the Tweak.
+- Uses a new, less invasive method for fixing Google.
+
+### v1.0.1
+- Fixed an issue where the Tweak didn't work on some iOS Versions
+
+### v1.0.0
+- Initial release
+
 ## Behind the Scenes
 
 The tweak hooks into `UIWebView` and modifies the User Agent string for Google domains only. It sets the User Agent to iOS 7.0 Safari, which Google accepts, eliminating the "update your browser" message. I will update this tweak and add some settings for more User Agend options like iOS 8.
