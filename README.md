@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="343" height="76" alt="GoogleFixIcon" src="https://github.com/user-attachments/assets/540ddebe-a0a6-4410-82b8-ee8b8da2fa41" />
+  <img width="120" height="120" alt="GoogleFix2Icon" src="https://github.com/user-attachments/assets/312ec67f-03f9-4827-b616-2a9973013052" />
 </p>
 <p align="center">
   An iOS tweak that fixes Google on iOS 6+.
