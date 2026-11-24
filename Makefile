@@ -1,17 +1,25 @@
 ARCHS = armv7 arm64
 TARGET := iphone:7.1
 
-INSTALL_TARGET_PROCESSES = SpringBoard
+INSTALL_TARGET_PROCESSES = MobileSafari
 
-GoogleFix_FRAMEWORKS = UIKit Foundation
+include Toolchain.mk
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = GoogleFix
 
 GoogleFix_FILES = Tweak.x
-GoogleFix_CFLAGS = -fobjc-arc
+GoogleFix_FRAMEWORKS = Foundation
+GoogleFix_CFLAGS = -fobjc-arc -I$(THEOS_PROJECT_DIR)/.theos/gen
 
 include $(THEOS_MAKE_PATH)/tweak.mk
+
+SUBPROJECTS += GoogleFixPrefs
+include $(THEOS_MAKE_PATH)/aggregate.mk
+
+before-all::
+	@mkdir -p "$(THEOS_PROJECT_DIR)/.theos/gen"
+	@perl "$(THEOS_PROJECT_DIR)/js2h.pl" "$(THEOS_PROJECT_DIR)/Polyfills.js" > "$(THEOS_PROJECT_DIR)/.theos/gen/Polyfills.h"
 
 
 # ------------------------------- PACKAGE PIPELINES -------------------------------
@@ -55,7 +63,7 @@ dev-pipeline:
 		echo "[✅] Repo update finished"; \
 		MSG="Built $$VERSION and updated repo"; \
 		echo "[🔔] Notifying macOS…"; \
-		/usr/bin/osascript -e "display notification \"$$MSG\" with title \"iCloudMailFix Build\" subtitle \"Deployment complete\"" \
+		/usr/bin/osascript -e "display notification \"$$MSG\" with title \"GoogleFix Build\" subtitle \"Deployment complete\"" \
 		&& echo "[✅] Notification sent" || echo "[⚠️ ] Could not display notification"'
 
 release-pipeline:

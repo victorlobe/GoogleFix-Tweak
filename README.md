@@ -2,7 +2,7 @@
   <img width="343" height="76" alt="GoogleFixIcon" src="https://github.com/user-attachments/assets/540ddebe-a0a6-4410-82b8-ee8b8da2fa41" />
 </p>
 <p align="center">
-  An iOS tweak that fixes Google on iOS 6+ by bypassing browser detection.
+  An iOS tweak that fixes Google on iOS 6+.
 </p>
 
 <p align="center">
@@ -21,9 +21,6 @@
 - Compatible with iOS 6 and newer
 - Minimal code - only hooks Google domains
 
-## ⚠️ Known Issue
-
-**Note**: On some devices (especially iOS 6.0.x), all websites may currently show the iOS 7 User-Agent instead of just Google domains. This will be fixed in an upcoming update in the next few hours.
 
 ## Requirements
 
@@ -39,10 +36,17 @@
 
 3. **Respring your device**
 
-4. **Open Google** - it should now work without browser warnings!
+4. **Open Safari and search something with Google**
 
 
 ## Changelog
+
+### v2
+- GoogleFix works again! Google now runs a JavaScript check before showing results, and Safari on iOS 6 couldn't run it. GoogleFix now adds the missing JavaScript features so the check passes on old devices.
+- New settings page.
+- Classic Layout switch: shows Google's simple desktop layout instead of the current mobile one.
+- GoogleFix now only loads into Safari.
+- The custom User Agent is now only used for Google. All other websites see Safari's real UA again.
 
 ### v1.0.2
 - Fixes UserDefault key leftovers when removing the Tweak.
@@ -54,9 +58,6 @@
 ### v1.0.0
 - Initial release
 
-## Behind the Scenes
-
-The tweak hooks into `UIWebView` and modifies the User Agent string for Google domains only. It sets the User Agent to iOS 7.0 Safari, which Google accepts, eliminating the "update your browser" message. I will update this tweak and add some settings for more User Agend options like iOS 8.
 
 ## Author
 
