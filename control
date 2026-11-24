@@ -1,10 +1,11 @@
 Package: com.victorlobe.googlefix
 Name: GoogleFix
-Version: 2
+Version: 2.0.1
 Architecture: iphoneos-arm
 Description: Fixes Google on iOS 6
 Maintainer: Victor
 Author: Victor
 Section: Tweaks
+Icon: file:///Library/Application%20Support/com.victorlobe.googlefix/icon.png
 Depends: mobilesubstrate (>= 0.9.5000), preferenceloader
-Depiction: https://testrepo.victorlobe.me/depictions/depiction.html?id=com.victorlobe.googlefix
+Depiction: http://repo.victorlobe.me/depictions/depiction.html?id=com.victorlobe.googlefix

@@ -41,6 +41,10 @@
 
 ## Changelog
 
+### v2.0.1
+- Added a package Icon.
+- Fixed the depiction URL.
+
 ### v2
 - GoogleFix works again! Google now runs a JavaScript check before showing results, and Safari on iOS 6 couldn't run it. GoogleFix now adds the missing JavaScript features so the check passes on old devices.
 - New settings page.
