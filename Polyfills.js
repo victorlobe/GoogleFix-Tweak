@@ -79,7 +79,7 @@ def(SP,'includes',function(s,p){return this.indexOf(s,p)!==-1;});
 def(SP,'startsWith',function(s,p){p=p|0;return this.substr(p,s.length)===s;});
 def(SP,'endsWith',function(s,e){var t=String(this);e=e===void 0?t.length:e;return t.slice(e-s.length,e)===s;});
 def(SP,'repeat',function(n){var r='',s=String(this);n=n|0;while(n-->0)r+=s;return r;});
-def(SP,'padStart',function(l,c){var s=String(this);c=c===void 0?' ':String(c);while(s.length<l)s=c+s;return s.slice(s.length-Math.max(l,String(this).length));});
+def(SP,'padStart',function(l,c){var s=String(this),n=l-s.length;c=c===void 0?' ':String(c);if(n<=0)return s;while(c.length<n)c+=c;return c.slice(0,n)+s;});
 def(SP,'padEnd',function(l,c){var s=String(this);c=c===void 0?' ':String(c);while(s.length<l)s+=c;return s.slice(0,Math.max(l,String(this).length));});
 def(SP,'trimStart',function(){return String(this).replace(/^\s+/,'');});
 def(SP,'trimEnd',function(){return String(this).replace(/\s+$/,'');});
