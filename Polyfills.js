@@ -67,7 +67,7 @@ def(Array,'of',function(){return AP.slice.call(arguments);});
 def(AP,'find',function(f,t){for(var i=0;i<this.length;i++)if(f.call(t,this[i],i,this))return this[i];});
 def(AP,'findIndex',function(f,t){for(var i=0;i<this.length;i++)if(f.call(t,this[i],i,this))return i;return -1;});
 def(AP,'findLast',function(f,t){for(var i=this.length-1;i>=0;i--)if(f.call(t,this[i],i,this))return this[i];});
-def(AP,'includes',function(v,s){for(var i=s|0;i<this.length;i++)if(this[i]===v||(v!==v&&this[i]!==this[i]))return true;return false;});
+def(AP,'includes',function(v,s){var i=s|0;if(i<0)i=Math.max(this.length+i,0);for(;i<this.length;i++)if(this[i]===v||(v!==v&&this[i]!==this[i]))return true;return false;});
 def(AP,'fill',function(v,s,e){var l=this.length;s=s|0;e=e===void 0?l:e|0;if(s<0)s+=l;if(e<0)e+=l;for(var i=s;i<e;i++)this[i]=v;return this;});
 def(AP,'flat',function(d){d=d===void 0?1:d;var r=[];(function f(a,d){for(var i=0;i<a.length;i++)if(Array.isArray(a[i])&&d>0)f(a[i],d-1);else r.push(a[i]);})(this,d);return r;});
 def(AP,'at',function(i){i=i|0;if(i<0)i+=this.length;return this[i];});
